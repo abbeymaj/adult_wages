@@ -8,4 +8,4 @@ flask_cors
 pytest
 pyarrow
 fastparquet
--e .
+#-e .
