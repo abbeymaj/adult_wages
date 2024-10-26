@@ -38,4 +38,46 @@ class DataIngestion():
         test file path : str - This is the path to the test dataset.
         ====================================================================================
         '''
-        pass
+        try:
+            # Creating the artifacts directory
+            os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
+            
+            # Defining the url where the data is located
+            URL = "http://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data"
+            
+            # Defining the name of the columns for the dataframe
+            COLS = [
+                'age', 
+                'workclass', 
+                'fnlwgt', 
+                'education', 
+                'education-num', 
+                'marital-status', 
+                'occupation', 
+                'relationship', 
+                'race', 
+                'sex', 
+                'capital-gain', 
+                'capital-loss', 
+                'hours-per-week', 
+                'native-country', 
+                'target_class'
+                ]
+            
+            # Reading the dataset into a pandas dataframe
+            df = pd.read_csv(URL, header=None, names=COLS)
+            
+            # Splitting the dataset into a train and test set
+            train_set, test_set = train_test_split(df, test_size=0.33, random_state=42)
+            
+            # Saving the datasets into the artifacts folders
+            train_set.to_parquet(self.ingestion_config.train_data_path, index=False, compression='gzip')
+            test_set.to_parquet(self.ingestion_config.test_data_path, index=False, compression='gzip')
+            
+            return (
+                self.ingestion_config.train_data_path,
+                self.ingestion_config.test_data_path
+            )
+        
+        except Exception as e:
+            raise CustomException(e, sys)
