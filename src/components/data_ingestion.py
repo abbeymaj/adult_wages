@@ -38,6 +38,8 @@ class DataIngestion():
         test file path : str - This is the path to the test dataset.
         ====================================================================================
         '''
+        logging.info("Beginning the data ingestion process.")
+        
         try:
             # Creating the artifacts directory
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
@@ -74,10 +76,12 @@ class DataIngestion():
             train_set.to_parquet(self.ingestion_config.train_data_path, index=False, compression='gzip')
             test_set.to_parquet(self.ingestion_config.test_data_path, index=False, compression='gzip')
             
+            logging.info("Completed the data ingestion process.")
+            
             return (
                 self.ingestion_config.train_data_path,
                 self.ingestion_config.test_data_path
             )
-        
+                
         except Exception as e:
             raise CustomException(e, sys)
