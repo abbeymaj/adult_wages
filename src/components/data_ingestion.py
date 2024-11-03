@@ -27,7 +27,7 @@ class DataIngestion():
     # Defining the function to ingest the data
     def initiate_data_ingestion(self):
         '''
-        This function will ingest the data from source, split the dataset into a train
+        This method will ingest the data from source, split the dataset into a train
         and test dataset. The function will also create the artifacts folder and store
         the train and test dataset in the artifacts folder.
         ====================================================================================
