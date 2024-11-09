@@ -8,4 +8,5 @@ flask_cors
 pytest
 pyarrow
 fastparquet
+category_encoders
 #-e .
