@@ -6,6 +6,7 @@ from src.components.config_entity import DataIngestionConfig
 from src.utils import remove_blank_spaces
 from src.utils import remove_question_mark
 from src.utils import recode_target_class
+from src.utils import WOE
 
 # Creating a function to define the path of the untransformed train dataset
 @pytest.fixture(scope='function')
@@ -54,15 +55,30 @@ def test_check_question_marked_removed_testset(test_data_path):
         assert '?' not in clean_test_df[col].values
 
 # Creating a function to recode the target_class column in the train
-# dataset.
+# dataset and verify that there are two distinct values after recoding.
 def test_recode_train_target_class_column(train_data_path):
     train_df = pd.read_parquet(train_data_path)
-    train_df.loc[:, 'target_class'] = train_df.loc[:, 'target_class'].apply(recode_target_class)
-    assert '<=50K' not in train_df['target_class'].values
+    train_df = train_df.pipe(remove_blank_spaces).pipe(recode_target_class)
+    assert len(list(train_df['target_class'].unique())) == 2
+
+# Creating a function to recode the target_class column in the train
+# dataset and verify that the values are numeric
+def test_recode_train_target_column_type(train_data_path):
+    train_df = pd.read_parquet(train_data_path)
+    train_df = train_df.pipe(remove_blank_spaces).pipe(recode_target_class)
+    assert pd.api.types.is_numeric_dtype(train_df['target_class']) is True
 
 # Creating a function to recode the target_class in the test
 # dataset
 def test_recode_test_target_class_column(test_data_path):
     test_df = pd.read_parquet(test_data_path)
-    test_df.loc[:, 'target_class'] = test_df.loc[:, 'target_class'].apply(recode_target_class)
-    assert '<=50K' not in test_df['target_class'].values
+    test_df = test_df.pipe(remove_blank_spaces).pipe(recode_target_class)
+    assert len(list(test_df['target_class'].unique())) == 2
+
+# Creating a function to recode the target_class column in the test
+# dataset and verify that the values are numeric
+def test_recode_test_target_column_type(test_data_path):
+    test_df = pd.read_parquet(test_data_path)
+    test_df = test_df.pipe(remove_blank_spaces).pipe(recode_target_class)
+    assert pd.api.types.is_numeric_dtype(test_df['target_class']) is True
+    

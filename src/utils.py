@@ -3,6 +3,10 @@ import os
 import sys
 import dill
 from src.exception import CustomException
+from category_encoders import WOEEncoder
+import sklearn
+sklearn.set_config(transform_output='pandas')
+from sklearn.base import BaseEstimator, TransformerMixin
 
 
 # Creating a function to save objects as pickle files
@@ -110,7 +114,7 @@ def remove_question_mark(df):
 
 
 # Creating a function to recode the target class
-def recode_target_class(target):
+def recode_target_class(df):
     '''
     This function recodes the target column from a string column to a numeric binary
     column so that machine learning models can consume it.
@@ -126,7 +130,69 @@ def recode_target_class(target):
     The target_class column recoded into a binary column.
     =======================================================================================
     '''
-    if target == '<=50K':
-        return 0
-    else:
-        return 1
+    df.loc[:, 'target_class'] = df.loc[:, 'target_class'].map(lambda x: 0 if x == '<=50K' else 1)
+    df['target_class'] = df.loc[:, 'target_class'].astype(int)
+    return df
+    
+
+# Creating a class to encode variables based on Weight of Evidence
+class WOE(BaseEstimator, TransformerMixin):
+    '''
+    This class encodes categorical variables using the weight of evidence. This class has
+    two methods - a fit method and a transform method. The class also inherits from 
+    sklearn's BaseEstimator and TransformerMixin classes.
+    '''
+    def __init__(self, cols=None):
+        '''
+        This is the constructor of the weight of evidence class. It instantiates the columns
+        which will be transformed using the weight of evidence.  
+        '''
+        self.cols = cols
+    
+    def fit(self, X, y):
+        '''
+        This method uses the feature and the target set to fit the identified categorical 
+        columns with the calculated weight of evidence per categorical variable.
+        ========================================================================================
+        ---------------------
+        Parameters:
+        ---------------------
+        X : This is the feature dataset containing the categorical variables.
+        y : This is the target dataset.
+        
+        ---------------------
+        Returns:
+        ---------------------
+        The dataset after being fit with the data.
+        =========================================================================================
+        
+        '''
+        self.woe_encoder = WOEEncoder(cols=self.cols)
+        self.woe_encoder.fit(X, y)
+        return self
+        
+    
+    def transform(self, X, y=None):
+        '''
+        This method transforms the categorical data into their calculated weight of 
+        evidence after the data has been fit. If the target dataset is present,
+        the method executes the transformation using both the feature and target
+        datasets. Else, the method will only use the feature dataset to transform the
+        dataset.
+        ========================================================================================
+        ---------------------
+        Parameters:
+        ---------------------
+        X : This is the feature dataset containing the categorical variables.
+        y : This is the target dataset. This is not a mandatory arguement. 
+        
+        ---------------------
+        Returns:
+        ---------------------
+        The dataset after being transformed using the weight of evidence.
+        =========================================================================================
+        '''
+        if y is not None:
+            return self.woe_encoder.transform(X, y)
+        else:
+            return self.woe_encoder.transform(X)
