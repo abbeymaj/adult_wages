@@ -196,3 +196,31 @@ class WOE(BaseEstimator, TransformerMixin):
             return self.woe_encoder.transform(X, y)
         else:
             return self.woe_encoder.transform(X)
+
+
+# Creating a function to convert capital gains and capital loss into a categorical feature
+def convert_to_categorical(df):
+    '''
+    This function will convert the capital-gains and capital-loss features from a 
+    continuous feature to a categorical feature.
+    ========================================================================================
+    ---------------------
+    Parameters:
+    ---------------------
+    df : This is the dataset with the capital-gain and capital-loss features
+    
+    ---------------------
+    Returns:
+    ---------------------
+    df : The modified dataset after transforming the capital-gain and capital-loss features
+    into a categorical feature.
+    =========================================================================================
+    '''
+    # Transforming the capital-gain feature into a categorical feature
+    df.loc[:, 'capital-gain-trns'] = df.loc[:, 'capital-gain'].map(lambda a: 'cap_gain' if a > 0 else 'no_cap_gain')
+    df.drop(labels=['capital-gain'], axis=1, inplace=True)
+    
+    # Transforming the capital-loss feature into a categorical feature
+    df.loc[:, 'capital-loss-trns'] = df.loc[:, 'capital-loss'].map(lambda b: 'cap_loss' if b > 0 else 'no_cap_loss')
+    df.drop(labels=['capital-loss'], axis=1, inplace=True)
+    return df
