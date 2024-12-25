@@ -45,7 +45,9 @@ class DataTransformation():
         preprocessor : pipeline object - Returns the preprocessor object. 
         =============================================================================
         '''
-        try:          
+        try:
+            logging.info('Creating the preporcessor object.')
+                 
             # Defining the numerical features
             num_cols = ['age', 'education-num', 'hours-per-week']
             
@@ -97,6 +99,8 @@ class DataTransformation():
                 ]
             )
             
+            logging.info('Preprocessor object has been created successfully.')
+            
             return preprocessor
             
         
@@ -124,6 +128,8 @@ class DataTransformation():
         ================================================================================
         '''
         try:
+            logging.info('Initiating the data transformation process.')
+            
             # Reading the train and test datasets
             train_df = pd.read_parquet(self.data_ingestion_config.train_data_path)
             test_df = pd.read_parquet(self.data_ingestion_config.test_data_path)
@@ -156,7 +162,7 @@ class DataTransformation():
             input_target_test_df = test_df_clean[['target_class']]
             
             # Transforming the train and test datasets
-            input_feature_train_arr = preprocessor_obj.fit_transform(input_feature_train_df)
+            input_feature_train_arr = preprocessor_obj.fit_transform(input_feature_train_df, input_target_train_df)
             input_feature_test_arr = preprocessor_obj.transform(input_feature_test_df)
             
             # Combining the transformed train and test datasets with their respective
@@ -169,6 +175,8 @@ class DataTransformation():
                 file_path=self.data_transformation_config.preprocessor_obj_path,
                 object=preprocessor_obj
             )
+            
+            logging.info('Data transformation process has been completed.')
             
             return(
                 input_train_combined,
