@@ -6,7 +6,7 @@ from src.exception import CustomException
 from category_encoders import WOEEncoder
 import sklearn
 sklearn.set_config(transform_output='pandas')
-from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.base import BaseEstimator, TransformerMixin, ClassifierMixin
 
 
 # Creating a function to save objects as pickle files
@@ -136,7 +136,7 @@ def recode_target_class(df):
     
 
 # Creating a class to encode variables based on Weight of Evidence
-class WOE(TransformerMixin, BaseEstimator):
+class WOE(TransformerMixin, ClassifierMixin, BaseEstimator):
     '''
     This class encodes categorical variables using the weight of evidence. This class has
     two methods - a fit method and a transform method. The class also inherits from 
