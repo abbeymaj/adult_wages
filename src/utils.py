@@ -136,7 +136,7 @@ def recode_target_class(df):
     
 
 # Creating a class to encode variables based on Weight of Evidence
-class WOE(BaseEstimator, TransformerMixin):
+class WOE(TransformerMixin, BaseEstimator):
     '''
     This class encodes categorical variables using the weight of evidence. This class has
     two methods - a fit method and a transform method. The class also inherits from 
