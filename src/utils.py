@@ -196,6 +196,25 @@ class WOE(TransformerMixin, ClassifierMixin, BaseEstimator):
             return self.woe_encoder.transform(X, y)
         else:
             return self.woe_encoder.transform(X)
+    
+    @classmethod
+    def __sklearn_tags__(cls):
+        return {
+            'non_deterministic': False,
+            'requires_positive_X': False,
+            'requires_positive_y': False,
+            'X_types': ['2darray', 'string'],
+            'poor_score': False,
+            'no_validation': False,
+            'multioutput': False,
+            'allow_nan': False,
+            'stateless': False,
+            'multilabel': False,
+            '_skip_test': False,
+            'multioutput_only': False,
+            'binary_only': False,
+            'requires_fit': True,
+        }
 
 
 # Creating a function to convert capital gains and capital loss into a categorical feature
