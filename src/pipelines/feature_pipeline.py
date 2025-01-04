@@ -12,11 +12,8 @@ from src.components.store_features import FeatureStoreCreation
 if __name__ == '__main__':
     
     # Creating artifacts folder and ingesting the data
-    #ingestion_obj = DataIngestion()
-    #train_path, test_path = ingestion_obj.initiate_data_ingestion()
-    ingest_obj = DataIngestionConfig()
-    train_path = ingest_obj.train_data_path
-    test_path = ingest_obj.test_data_path
+    ingestion_obj = DataIngestion()
+    train_path, test_path = ingestion_obj.initiate_data_ingestion()
     
     # Transforming the datasets
     data_transf_obj = DataTransformation()
