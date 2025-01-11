@@ -9,4 +9,6 @@ pytest
 pyarrow
 fastparquet
 category_encoders
+optuna
+optuna-integration[xgboost]
 #-e .
