@@ -243,3 +243,20 @@ def convert_to_categorical(df):
     df.loc[:, 'capital-loss-trns'] = df.loc[:, 'capital-loss'].map(lambda b: 'cap_loss' if b > 0 else 'no_cap_loss')
     df.drop(labels=['capital-loss'], axis=1, inplace=True)
     return df
+
+# Creating a custom callback to use when finding the best xgboost model
+def best_model_callback(study, trial):
+    '''
+    This function creates a custom callback to use when searching for the 
+    best XGBoost model. The function is used in conjuction with Optuna to 
+    find the best model.
+    ========================================================================================
+    ---------------------
+    Parameters:
+    ---------------------
+    study : This is the study object from Optuna.
+    trial : This is the number of trials when optimizing the Optuna study.
+    =========================================================================================
+    '''
+    if study.best_trial.number == trial.number:
+        study.set_user_attr(key='best_booster', value=trial.user_attrs['best_booster'])
