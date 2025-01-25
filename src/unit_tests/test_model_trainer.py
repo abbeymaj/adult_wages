@@ -63,7 +63,6 @@ def test_train_model():
 
 def test_predict_model(xform_train_data):
     subprocess.call('./start_mlflow_server.sh', shell=True)
-    mlflow.set_tracking_uri('file:///artifacts/model_db/mlflow.db')
     version = 2
     model_name = 'training_model'
     model = mlflow.pyfunc.load_model(

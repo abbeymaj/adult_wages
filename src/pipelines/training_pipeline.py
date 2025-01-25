@@ -6,7 +6,6 @@ from src.components.model_trainer import ModelTrainer
 
 if __name__ == '__main__':
     subprocess.call('./start_mlflow_server.sh', shell=True)
-    mlflow.set_tracking_uri('file:///artifacts/model_db/mlflow.db')
     with mlflow.start_run(run_name='training_pipeline') as run:
         run_id = run.info.run_id
         trainer = ModelTrainer()
@@ -15,7 +14,7 @@ if __name__ == '__main__':
         mlflow.log_metric('roc_auc_score', metric)
         model_info = mlflow.xgboost.log_model(
             xgb_model=best_model,
-            artifact_path='models/training_model',
+            artifact_path='training_model',
             registered_model_name='training_model'
         )
         mlflow.register_model(f"runs:/{run_id}/models/training_model", "training_model")
