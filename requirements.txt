@@ -11,4 +11,5 @@ fastparquet
 category_encoders
 optuna
 optuna-integration[xgboost]
+mlflow
 #-e .

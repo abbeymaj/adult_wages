@@ -7,6 +7,7 @@ from category_encoders import WOEEncoder
 import sklearn
 sklearn.set_config(transform_output='pandas')
 from sklearn.base import BaseEstimator, TransformerMixin, ClassifierMixin
+import xgboost as xgb
 
 
 # Creating a function to save objects as pickle files
@@ -260,3 +261,26 @@ def best_model_callback(study, trial):
     '''
     if study.best_trial.number == trial.number:
         study.set_user_attr(key='best_booster', value=trial.user_attrs['best_booster'])
+
+
+# Creating a function to make predictions using the best model
+def make_predictions(dataset, model):
+    '''
+    This function makes predictions, given a dataset and a model. The function coverts a 
+    dataset into a DMatrix and then makes predictions using the model.
+    ========================================================================================
+    ---------------------
+    Parameters:
+    ---------------------
+    dataset : This is the dataset on which predictions need to be made.
+    model : This is the model that will be used to make the predictions.
+    
+    ---------------------
+    Returns:
+    ---------------------
+    y_pred : This is the prediction made by the model.
+    =========================================================================================
+    '''
+    dmatrix = xgb.DMatrix(dataset)
+    y_pred = model.predict(dmatrix)
+    return y_pred
