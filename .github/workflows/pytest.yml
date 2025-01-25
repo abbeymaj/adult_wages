@@ -23,5 +23,8 @@ jobs:
           pip install scikit-learn==1.5.2
           pip install -r requirements.txt
       
+      - name: Start the mlflow server
+        run: src/unit_tests/start_mlflow_server.sh
+      
       - name: Run Pytest
         run: pytest src/unit_tests/

@@ -17,4 +17,4 @@ if __name__ == '__main__':
             artifact_path='training_model',
             registered_model_name='training_model'
         )
-        mlflow.register_model(f"runs:/{run_id}/models/training_model", "training_model")
+        #mlflow.register_model(f"runs:/{run_id}/models/training_model", "training_model")

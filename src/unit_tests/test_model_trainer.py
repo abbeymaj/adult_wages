@@ -63,7 +63,7 @@ def test_train_model():
 
 def test_predict_model(xform_train_data):
     subprocess.call('./start_mlflow_server.sh', shell=True)
-    version = 2
+    version = 3
     model_name = 'training_model'
     model = mlflow.pyfunc.load_model(
         model_uri=f"models:/{model_name}/{version}"
