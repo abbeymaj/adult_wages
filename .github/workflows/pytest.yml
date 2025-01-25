@@ -24,7 +24,9 @@ jobs:
           pip install -r requirements.txt
       
       - name: Start the mlflow server
-        run: src/unit_tests/start_mlflow_server.sh
+        run: |
+          chmod +x src/unit_tests/start_mlflow_server.sh
+          ./src/unit_tests/start_mlflow_server.sh
       
       - name: Run Pytest
         run: pytest src/unit_tests/
