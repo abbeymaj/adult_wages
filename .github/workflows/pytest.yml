@@ -26,7 +26,8 @@ jobs:
       - name: Make the bash script executable
         run: chmod +x src/unit_tests/start_mlflow_server.sh
       
+      - name: Start MLflow server 
+        run: ./src/unit_tests/start_mlflow_server.sh
+      
       - name: Run Pytest
-        run: | 
-        python -c "import subprocess; subprocess.call('./src/unit_tests/start_mlflow_server.sh', shell=True)"
-        pytest src/unit_tests/
+        run: pytest src/unit_tests/
