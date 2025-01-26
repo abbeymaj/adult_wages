@@ -61,9 +61,11 @@ def test_train_model():
     assert isinstance(metric, float)
     assert isinstance(best_model, xgb.core.Booster)
 
+# Creating a function to verify that the model is accessible and can be used for
+# inference and predictions.
 def test_predict_model(xform_train_data):
     subprocess.call('./start_mlflow_server.sh', shell=True)
-    version = 3
+    version = 5
     model_name = 'training_model'
     model = mlflow.pyfunc.load_model(
         model_uri=f"models:/{model_name}/{version}"

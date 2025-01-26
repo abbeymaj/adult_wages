@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1737851441271
+current_stage: None
+description: null
+last_updated_timestamp: 1737851441271
+name: training_model
+run_id: 0fcd525c247048d5ab50926ca307a760
+run_link: null
+source: file:///D:/git/adult_wages/mlruns/0/0fcd525c247048d5ab50926ca307a760/artifacts/models/training_model
+status: READY
+status_message: null
+storage_location: file:///D:/git/adult_wages/mlruns/0/0fcd525c247048d5ab50926ca307a760/artifacts/models/training_model
+user_id: null
+version: 4

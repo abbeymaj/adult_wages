@@ -14,7 +14,7 @@ if __name__ == '__main__':
         mlflow.log_metric('roc_auc_score', metric)
         model_info = mlflow.xgboost.log_model(
             xgb_model=best_model,
-            artifact_path='training_model',
+            artifact_path='models/training_model',
             registered_model_name='training_model'
         )
-        #mlflow.register_model(f"runs:/{run_id}/models/training_model", "training_model")
+        mlflow.register_model(f"runs:/{run_id}/models/training_model", "training_model")
