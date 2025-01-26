@@ -30,7 +30,8 @@ jobs:
         run: ./src/unit_tests/start_mlflow_server.sh
 
       - name: Set MLFlow tracking uri 
-        run: mlflow set-tracking-uri "file:///mlruns"
+        run: | 
+          export MLFLOW_TRACKING_URI="file:///$(pwd)/mlruns"
       
       - name: Run Pytest
         run: pytest src/unit_tests/
