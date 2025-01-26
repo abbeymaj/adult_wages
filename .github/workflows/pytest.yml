@@ -23,7 +23,11 @@ jobs:
           pip install scikit-learn==1.5.2
           pip install -r requirements.txt
       
+      - name: Make the bash script executable
+        run: chmod +x src/unit_tests/start_mlflow_server.sh
+      
+      - name: Start MLflow server 
+        run: python -c "import subprocess; subprocess.call('./src/unit_tests/start_mlflow_server.sh', shell=True)"
+      
       - name: Run Pytest
-        run: | 
-          chmod +x src/unit_tests/start_mlflow_server.sh
-          pytest src/unit_tests/
+        run: pytest src/unit_tests/
