@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/git/adult_wages/mlruns/950046219577216723/581223258bce4b8a996e2d8da9f242d7/artifacts
+end_time: 1737854661309
+entry_point_name: ''
+experiment_id: '950046219577216723'
+lifecycle_stage: active
+run_id: 581223258bce4b8a996e2d8da9f242d7
+run_name: training_pipeline
+run_uuid: 581223258bce4b8a996e2d8da9f242d7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1737854584757
+status: 3
+tags: []
+user_id: abhij
