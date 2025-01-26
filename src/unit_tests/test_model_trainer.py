@@ -5,6 +5,7 @@ import pytest
 import pandas as pd
 import xgboost as xgb
 import mlflow
+from mlflow.tracking import MlflowClient
 from src.utils import best_model_callback
 from src.components.find_best_model import FindBestModel
 from src.components.config_entity import StoreFeatureConfig
@@ -63,6 +64,7 @@ def test_train_model():
 
 # Creating a function to verify that the model is accessible and can be used for
 # inference and predictions.
+'''
 def test_predict_model(xform_train_data):
     subprocess.call('./start_mlflow_server.sh', shell=True)
     version = 5
@@ -71,6 +73,22 @@ def test_predict_model(xform_train_data):
         model_uri=f"models:/{model_name}/{version}"
     )
     y_preds = model.predict(xform_train_data[0])
+    assert y_preds is not None
+'''
+
+
+def test_predict_model_2(xform_train_data):
+    subprocess.call('./start_mlflow_server.sh', shell=True)
+    client = MlflowClient()
+    version = 5
+    model_name = 'training_model'
+    model_version = client.get_model_version(name=model_name, version=version)
+    run_id = model_version.run_id
+    model = mlflow.xgboost.load_model(
+        model_uri=f"runs:/{run_id}/models/{model_name}"
+    )
+    matrix_data = xgb.DMatrix(xform_train_data[0])
+    y_preds = model.predict(matrix_data)
     assert y_preds is not None
     
     
