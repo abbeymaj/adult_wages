@@ -31,7 +31,7 @@ jobs:
 
       - name: Set MLFlow tracking uri 
         run: | 
-          export MLFLOW_TRACKING_URI="file:///$(pwd)/mlruns"
+          export MLFLOW_TRACKING_URI="file://${{ github.workspace }}/mlruns"
       
       - name: Run Pytest
         run: pytest src/unit_tests/
