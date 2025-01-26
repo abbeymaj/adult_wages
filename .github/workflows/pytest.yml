@@ -31,7 +31,8 @@ jobs:
 
       - name: Set MLFlow tracking uri 
         run: | 
-          export MLFLOW_TRACKING_URI="file:///$(pwd)/mlruns/models"
+          export MLFLOW_TRACKING_URI="file:///$(pwd)/mlruns"
+          mlflow set-experiment --experiment-name "training_pipeline"
       
       - name: Run Pytest
         run: pytest src/unit_tests/
