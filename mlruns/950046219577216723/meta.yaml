@@ -1,6 +1,0 @@
-artifact_location: file:///D:/git/adult_wages/mlruns/950046219577216723
-creation_time: 1737854584366
-experiment_id: '950046219577216723'
-last_update_time: 1737854584366
-lifecycle_stage: active
-name: training_pipeline
