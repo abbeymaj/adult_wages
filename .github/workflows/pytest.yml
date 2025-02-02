@@ -26,6 +26,9 @@ jobs:
       - name: Make the bash script executable
         run: chmod +x ./src/unit_tests/start_mlflow_server.sh
       
+      - name: List directory contents
+        run: ls -R src/unit_tests
+      
       - name: Start MLflow server 
         run: ./src/unit_tests/start_mlflow_server.sh
 
@@ -34,4 +37,4 @@ jobs:
           export MLFLOW_TRACKING_URI="file://${{ github.workspace }}/model_db"
       
       - name: Run Pytest
-        run: pytest src/unit_tests/
+        run: pytest -W ignore src/unit_tests/

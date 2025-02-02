@@ -93,7 +93,7 @@ def test_predict_model(xform_train_data):
     train_set, target_set = xform_train_data
     run_params_json = load_run_params()
     run_data = read_json_file(run_params_json)
-    subprocess.call('./start_mlflow_server.sh', shell=True)
+    subprocess.call('./src/unit_tests/start_mlflow_server.sh', shell=True)
     model_uri = pathlib.Path().cwd() / 'model_db' / 'mlflow.db'
     mlflow.set_tracking_uri(model_uri)
     my_model_uri = run_data['model_uri']
