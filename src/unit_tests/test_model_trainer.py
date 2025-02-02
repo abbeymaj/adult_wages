@@ -11,6 +11,7 @@ from src.components.find_best_model import FindBestModel
 from src.components.config_entity import StoreFeatureConfig
 from src.components.model_trainer import ModelTrainer
 from src.utils import load_run_params
+from src.utils import read_json_file
 
 
 # Creating a fixture to load the train set and target set
@@ -80,7 +81,23 @@ def test_get_run_parameter_json():
     assert run_params_json is not None
     
 
+# Creating a function to verify if the JSON file can be read
+def test_read_json_file():
+    run_params_json = load_run_params()
+    json_data = read_json_file(run_params_json)
+    assert json_data is not None
 
 # Creating a function to verify that the model is accessible and can be used for
 # inference and predictions.
-#def test_predict_model(xform_train_data):
+def test_predict_model(xform_train_data):
+    train_set, target_set = xform_train_data
+    run_params_json = load_run_params()
+    run_data = read_json_file(run_params_json)
+    subprocess.call('./start_mlflow_server.sh', shell=True)
+    model_uri = pathlib.Path().cwd() / 'model_db' / 'mlflow.db'
+    mlflow.set_tracking_uri(model_uri)
+    my_model_uri = run_data['model_uri']
+    model = mlflow.pyfunc.load_model(my_model_uri)
+    y_preds = model.predict(train_set)
+    assert y_preds is not None
+    

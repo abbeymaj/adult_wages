@@ -354,3 +354,23 @@ def load_run_params(directory='run_config'):
             latest_date = file_date
             latest_file = dir_path / file_name
     return latest_file
+
+
+# Creating a function to read the JSON file
+def read_json_file(file_path):
+    '''
+    This function reads the run parameters JSON file and returns the contents of the file.
+    ========================================================================================
+    ---------------------
+    Parameters:
+    ---------------------
+    file_path : str - This is the path to the run parameters json file.
+    
+    ---------------------
+    Returns:
+    ---------------------
+    run_parameters : json - This is the run pararmeters json file.
+    '''
+    with open(file_path, 'r') as file_obj:
+        data = json.load(file_obj)
+    return data
