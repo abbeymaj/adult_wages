@@ -1,7 +1,11 @@
 # Importing packages
 import os
+import pathlib
 import sys
 import dill
+import datetime
+import json
+import mlflow
 from src.exception import CustomException
 from category_encoders import WOEEncoder
 import sklearn
@@ -284,3 +288,69 @@ def make_predictions(dataset, model):
     dmatrix = xgb.DMatrix(dataset)
     y_pred = model.predict(dmatrix)
     return y_pred
+
+
+# Creating a function to set the tracking uri
+def set_tracking_uri():
+    '''
+    This function sets the tracking uri for the MLflow server.
+    ========================================================================================
+    ---------------------
+    Returns:
+    ---------------------
+    Sets the tracking uri for the Mlflow server.
+    =========================================================================================
+    '''
+    model_uri = pathlib.Path().cwd().parent / 'model_db' / 'mlflow.db'
+    return mlflow.set_tracking_uri(model_uri)
+
+
+# Creating a function to save the run parameters as a json file
+def save_run_params(run_params):
+    '''
+    This function saves the run parameters as a json file in the run_config folder. 
+    ========================================================================================
+    ---------------------
+    Parameters:
+    ---------------------
+    run_params : dict - This is the dictionary containing the run parameters.
+    
+    ---------------------
+    Returns:
+    ---------------------
+    Saves the run parameters as a json file into the run_config folder
+    '''
+    now = datetime.datetime.now().strftime('%Y%m%d')
+    file_path = pathlib.Path().cwd() / 'run_config' / f'run_params_{now}.json'
+    with open(file_path, 'w') as file_obj:
+        json.dump(run_params, file_obj)
+        
+
+# Creating a function to load the run parameters json file.
+def load_run_params(directory='run_config'):
+    '''
+    This function loads the run parameters as a json file, which is present
+    in the run_config folder. 
+    ========================================================================================
+    ---------------------
+    Parameters:
+    ---------------------
+    directory : str - This is the name of the directory in which the run parameters json
+    file is stored.
+    
+    ---------------------
+    Returns:
+    ---------------------
+    run_parameters : json - This is the run parameters json file. 
+    '''
+    dir_path = pathlib.Path().cwd() / directory
+    json_files = os.listdir(dir_path)
+    latest_file = None
+    latest_date = None
+    for file_name in json_files:
+        date_str = file_name.split('_')[2].split('.')[0]
+        file_date = datetime.datetime.strptime(date_str, '%Y%m%d')
+        if not latest_date or file_date > latest_date:
+            latest_date = file_date
+            latest_file = dir_path / file_name
+    return latest_file

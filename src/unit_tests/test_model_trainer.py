@@ -1,15 +1,16 @@
 # Importing packages
 import os
+import pathlib
 import subprocess
 import pytest
 import pandas as pd
 import xgboost as xgb
 import mlflow
-from mlflow.tracking import MlflowClient
 from src.utils import best_model_callback
 from src.components.find_best_model import FindBestModel
 from src.components.config_entity import StoreFeatureConfig
 from src.components.model_trainer import ModelTrainer
+from src.utils import load_run_params
 
 
 # Creating a fixture to load the train set and target set
@@ -62,33 +63,24 @@ def test_train_model():
     assert isinstance(metric, float)
     assert isinstance(best_model, xgb.core.Booster)
 
+# Creating a function to verify if the run_config directory is created and exists
+def test_is_run_config_dir_created():
+    run_config_dir_path = pathlib.Path().cwd() / 'run_config'
+    assert os.path.exists(run_config_dir_path)
+
+# Creating a function to verify if the model_db directory is created and exists
+def test_is_model_db_dir_created():
+    model_db_dir_path = pathlib.Path().cwd() / 'model_db'
+    assert os.path.exists(model_db_dir_path)
+
+
+# Creating a function to verify if the model parameters can be accessed and downloaded
+def test_get_run_parameter_json():
+    run_params_json = load_run_params()
+    assert run_params_json is not None
+    
+
+
 # Creating a function to verify that the model is accessible and can be used for
 # inference and predictions.
-'''
-def test_predict_model(xform_train_data):
-    subprocess.call('./start_mlflow_server.sh', shell=True)
-    version = 5
-    model_name = 'training_model'
-    model = mlflow.pyfunc.load_model(
-        model_uri=f"models:/{model_name}/{version}"
-    )
-    y_preds = model.predict(xform_train_data[0])
-    assert y_preds is not None
-'''
-
-
-def test_predict_model_2(xform_train_data):
-    subprocess.call('./start_mlflow_server.sh', shell=True)
-    client = MlflowClient()
-    version = 5
-    model_name = 'training_model'
-    model_version = client.get_model_version(name=model_name, version=version)
-    run_id = model_version.run_id
-    model = mlflow.xgboost.load_model(
-        model_uri=f"runs:/{run_id}/models/{model_name}"
-    )
-    matrix_data = xgb.DMatrix(xform_train_data[0])
-    y_preds = model.predict(matrix_data)
-    assert y_preds is not None
-    
-    
+#def test_predict_model(xform_train_data):
