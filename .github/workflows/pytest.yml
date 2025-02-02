@@ -7,6 +7,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      MLFLOW_TRACKING_URI: file:///${{ github.workspace }}/model_db/mlflow.db
 
     steps:
       - name: Checkout repository
