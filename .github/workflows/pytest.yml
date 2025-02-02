@@ -33,6 +33,9 @@ jobs:
       
       - name: Start MLflow server 
         run: ./src/unit_tests/start_mlflow_server.sh
+      
+      - name: Set file permissions
+        run: chmod 755 ./model_db/mlflow.db
 
       - name: Set MLFlow tracking uri 
         run: | 
