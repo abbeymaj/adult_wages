@@ -94,11 +94,14 @@ def test_predict_model(xform_train_data):
     run_params_json = load_run_params()
     run_data = read_json_file(run_params_json)
     subprocess.call('./src/unit_tests/start_mlflow_server.sh', shell=True)
-    model_uri = pathlib.Path().cwd() / 'model_db' / 'mlflow.db'
-    #mlflow.set_tracking_uri(f"file:///{model_uri}")
-    mlflow.set_tracking_uri(os.environ.get("MLFLOW_TRACKING_URI", "file:///model_db/mlflow.db"))
+    #model_uri = pathlib.Path().cwd() / 'model_db' / 'mlflow.db'
+    model_uri = pathlib.Path('model_db/mlflow.db').resolve()
+    #print(model_uri)
+    mlflow.set_tracking_uri(f"file:///{model_uri}")
+    #mlflow.set_tracking_uri(os.environ.get("MLFLOW_TRACKING_URI", "file:///model_db/mlflow.db"))
     my_model_uri = run_data['model_uri']
-    model = mlflow.pyfunc.load_model(my_model_uri)
+    run_id = '4d67a39dddb94981a6dfe782c0375642'
+    model = mlflow.pyfunc.load_model(f"runs:/{run_id}/models/training_model_1")
     assert model is not None
     #y_preds = model.predict(train_set)
     #assert y_preds is not None
