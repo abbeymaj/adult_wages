@@ -100,8 +100,10 @@ def test_predict_model(xform_train_data):
     mlflow.set_tracking_uri(f"file:///{model_uri}")
     #mlflow.set_tracking_uri(os.environ.get("MLFLOW_TRACKING_URI", "file:///model_db/mlflow.db"))
     my_model_uri = run_data['model_uri']
-    mlflow.set_experiment('training_1')
-    model = mlflow.pyfunc.load_model(my_model_uri)
+    model_name = run_data['model_name']
+    model_version = run_data['model_version']
+    mlflow.set_experiment('training_2')
+    model = mlflow.pyfunc.load_model(f"models:/{model_name}/{model_version}")
     assert model is not None
     #y_preds = model.predict(train_set)
     #assert y_preds is not None

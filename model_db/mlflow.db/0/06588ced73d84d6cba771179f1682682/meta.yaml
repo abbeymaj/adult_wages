@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/git/adult_wages/model_db/mlflow.db/0/06588ced73d84d6cba771179f1682682/artifacts
+end_time: 1738464534793
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 06588ced73d84d6cba771179f1682682
+run_name: training_pipeline_2
+run_uuid: 06588ced73d84d6cba771179f1682682
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1738464496590
+status: 3
+tags: []
+user_id: abhij

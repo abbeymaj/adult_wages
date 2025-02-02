@@ -18,11 +18,11 @@ if __name__ == '__main__':
     client = MlflowClient()
     
     # Creating the experiment
-    client.create_experiment('training_1')
+    client.create_experiment('training_2')
         
     # Starting the training run
     run_params = {}
-    with mlflow.start_run(run_name='training_pipeline') as run:
+    with mlflow.start_run(run_name='training_pipeline_2') as run:
         # Fetching the run id
         run_id = run.info.run_id
         # Instantiating the model traniner
@@ -34,14 +34,20 @@ if __name__ == '__main__':
         mlflow.log_metric('roc_auc_score', metric)
         model_info = mlflow.xgboost.log_model(
             xgb_model=best_model,
-            artifact_path='models/training_model_1',
-            registered_model_name='training_model_1'
+            artifact_path='models/training_model_2',
+            registered_model_name='training_model_2'
         )
         # Registering the model
-        mlflow.register_model(f"runs:/{run_id}/models/training_model_1", "training_model_1")
+        mlflow.register_model(f"runs:/{run_id}/models/training_model_2", "training_model_2")
+        
+        # Fetch the latest version of the model
+        latest_version = client.get_latest_versions('training_model_2', stages=['None'])[0].version
+        
         # Storing the model uri and run id into a dictionary
         run_params['model_uri'] = model_info.model_uri
         run_params['run_id'] = run_id
+        run_params['model_name'] = 'training_model_2'
+        run_params['model_version'] = latest_version
     
     # Saving the run parameters into a JSON file for future retrieval
     save_run_params(run_params)
