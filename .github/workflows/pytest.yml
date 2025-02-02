@@ -24,7 +24,7 @@ jobs:
           pip install -r requirements.txt
       
       - name: Make the bash script executable
-        run: chmod +x src/unit_tests/start_mlflow_server.sh
+        run: chmod +x ./src/unit_tests/start_mlflow_server.sh
       
       - name: Start MLflow server 
         run: ./src/unit_tests/start_mlflow_server.sh
