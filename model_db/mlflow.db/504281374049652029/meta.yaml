@@ -1,6 +1,0 @@
-artifact_location: file:///D:/git/adult_wages/model_db/mlflow.db/504281374049652029
-creation_time: 1738464495976
-experiment_id: '504281374049652029'
-last_update_time: 1738464495976
-lifecycle_stage: active
-name: training_2
