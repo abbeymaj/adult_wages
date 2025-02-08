@@ -6,6 +6,7 @@ import pytest
 import pandas as pd
 import xgboost as xgb
 import mlflow
+import dagshub
 from src.utils import best_model_callback
 from src.components.find_best_model import FindBestModel
 from src.components.config_entity import StoreFeatureConfig
@@ -93,18 +94,18 @@ def test_predict_model(xform_train_data):
     train_set, target_set = xform_train_data
     run_params_json = load_run_params()
     run_data = read_json_file(run_params_json)
-    subprocess.call('./src/unit_tests/start_mlflow_server.sh', shell=True)
+    #print(run_data)
+    #subprocess.call('./src/unit_tests/start_mlflow_server.sh', shell=True)
     #model_uri = pathlib.Path().cwd() / 'model_db' / 'mlflow.db'
-    model_uri = pathlib.Path('model_db/mlflow.db').resolve()
-    #print(model_uri)
-    mlflow.set_tracking_uri(f"sqlite:///{model_uri}")
-    #mlflow.set_tracking_uri(os.environ.get("MLFLOW_TRACKING_URI", "file:///model_db/mlflow.db"))
+    #model_uri = pathlib.Path('model_db/mlflow.db').resolve()
+    dagshub.init(repo_owner='abbeymaj', repo_name='my-first-repo', mlflow=True)
+    model_uri = 'https://dagshub.com/abbeymaj/my-first-repo.mlflow'
+    mlflow.set_tracking_uri(model_uri)
     my_model_uri = run_data['model_uri']
     model_name = run_data['model_name']
     model_version = run_data['model_version']
-    mlflow.set_experiment('training_2')
-    model = mlflow.pyfunc.load_model(f"models:/{model_name}/{model_version}")
+    #mlflow.set_experiment('training_2')
+    model = mlflow.pyfunc.load_model(my_model_uri)
     assert model is not None
     #y_preds = model.predict(train_set)
     #assert y_preds is not None
-    

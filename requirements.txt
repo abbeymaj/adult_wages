@@ -12,4 +12,5 @@ category_encoders
 optuna
 optuna-integration[xgboost]
 mlflow
+dagshub
 #-e .

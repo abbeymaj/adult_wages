@@ -1,31 +1,33 @@
 # Importing packages
 import pathlib
 import subprocess
+import dagshub
 import mlflow
 from mlflow import MlflowClient
 from src.utils import save_run_params
 from src.components.model_trainer import ModelTrainer
 
 if __name__ == '__main__':
-    # Starting the mlflow server
-    subprocess.call('./start_mlflow_server.sh', shell=True)
+    
+    # Initiating the Dagshub client
+    dagshub.init(repo_owner='abbeymaj', repo_name='my-first-repo', mlflow=True)
     
     # Setting the tracking uri for the model
-    model_uri = pathlib.Path().cwd() / 'model_db' / 'mlflow.db'
+    model_uri = 'https://dagshub.com/abbeymaj/my-first-repo.mlflow'
     mlflow.set_tracking_uri(model_uri)
     
     # Instantiating the mlflow client
     client = MlflowClient()
     
     # Creating the experiment
-    client.create_experiment('training_2')
+    experiment_id = client.create_experiment('training_1')
         
     # Starting the training run
     run_params = {}
-    with mlflow.start_run(run_name='training_pipeline_2') as run:
+    with mlflow.start_run(run_name='training_pipeline_1', experiment_id=experiment_id) as run:
         # Fetching the run id
         run_id = run.info.run_id
-        # Instantiating the model traniner
+        # Instantiating the model trainer
         trainer = ModelTrainer()
         # Fetching the best model and best model parameters
         best_model, best_params, metric, _ = trainer.initiate_model_training(save_model=False)
@@ -34,19 +36,19 @@ if __name__ == '__main__':
         mlflow.log_metric('roc_auc_score', metric)
         model_info = mlflow.xgboost.log_model(
             xgb_model=best_model,
-            artifact_path='models/training_model_2',
-            registered_model_name='training_model_2'
+            artifact_path='models/training_model_1',
+            registered_model_name='training_model_1'
         )
-        # Registering the model
-        mlflow.register_model(f"runs:/{run_id}/models/training_model_2", "training_model_2")
         
-        # Fetch the latest version of the model
-        latest_version = client.get_latest_versions('training_model_2', stages=['None'])[0].version
+        # Fetch the latest version of the model and the model name
+        latest_version_info = client.get_latest_versions('training_model_1', stages=['None'])[0]
+        model_name = latest_version_info.name
+        latest_version = latest_version_info.version
         
         # Storing the model uri and run id into a dictionary
         run_params['model_uri'] = model_info.model_uri
         run_params['run_id'] = run_id
-        run_params['model_name'] = 'training_model_2'
+        run_params['model_name'] = model_name
         run_params['model_version'] = latest_version
     
     # Saving the run parameters into a JSON file for future retrieval
