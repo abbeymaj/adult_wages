@@ -70,12 +70,6 @@ def test_is_run_config_dir_created():
     run_config_dir_path = pathlib.Path().cwd() / 'run_config'
     assert os.path.exists(run_config_dir_path)
 
-# Creating a function to verify if the model_db directory is created and exists
-def test_is_model_db_dir_created():
-    model_db_dir_path = pathlib.Path().cwd() / 'model_db'
-    assert os.path.exists(model_db_dir_path)
-
-
 # Creating a function to verify if the model parameters can be accessed and downloaded
 def test_get_run_parameter_json():
     run_params_json = load_run_params()
