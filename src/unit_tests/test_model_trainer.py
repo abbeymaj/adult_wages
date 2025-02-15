@@ -88,18 +88,11 @@ def test_predict_model(xform_train_data):
     train_set, target_set = xform_train_data
     run_params_json = load_run_params()
     run_data = read_json_file(run_params_json)
-    #print(run_data)
-    #subprocess.call('./src/unit_tests/start_mlflow_server.sh', shell=True)
-    #model_uri = pathlib.Path().cwd() / 'model_db' / 'mlflow.db'
-    #model_uri = pathlib.Path('model_db/mlflow.db').resolve()
     dagshub.init(repo_owner='abbeymaj', repo_name='my-first-repo', mlflow=True)
     model_uri = 'https://dagshub.com/abbeymaj/my-first-repo.mlflow'
     mlflow.set_tracking_uri(model_uri)
     my_model_uri = run_data['model_uri']
     model_name = run_data['model_name']
     model_version = run_data['model_version']
-    #mlflow.set_experiment('training_2')
     model = mlflow.pyfunc.load_model(my_model_uri)
     assert model is not None
-    #y_preds = model.predict(train_set)
-    #assert y_preds is not None
