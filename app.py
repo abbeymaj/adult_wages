@@ -1,6 +1,7 @@
 # Importing packages
 from src.components.create_custom_data import CustomData
 from src.components.make_prediction import MakePredictions
+from src.utils import convert_preds_to_string
 from flask import Flask, request, jsonify, render_template
 
 # Instantiating the Flask app
@@ -47,7 +48,8 @@ def predict_datapoint():
         
         # Instantiating the prediction pipeline and making predictions
         prediction = MakePredictions()
-        preds = prediction.predict(df)
+        num_preds = prediction.predict(df)
+        preds = convert_preds_to_string(num_preds)
         
         return render_template('predict.html', results=preds, pred_df=df)
 
@@ -92,3 +94,11 @@ def prediction_api():
         }
         
         return jsonify(preds_dict)
+
+
+# Running the Flask app
+if __name__ == '__main__':
+    try:
+        app.run(debug=True)
+    except Exception as e:
+        print(f"Failed to run the Flask app: {e}")

@@ -374,3 +374,21 @@ def read_json_file(file_path):
     with open(file_path, 'r') as file_obj:
         data = json.load(file_obj)
     return data
+
+
+# Creating a function to convert the prediction from a number to a string
+def convert_preds_to_string(preds):
+    '''
+    This function converts the prediction from a number to a string.
+    ========================================================================================
+    ---------------------
+    Parameters:
+    ---------------------
+    preds : int - This is the prediction made by the model.
+    
+    ---------------------
+    Returns:
+    ---------------------
+    prediction : str - This is the prediction in string format.
+    '''
+    return '<=50K' if preds == 0 else '>50K'
