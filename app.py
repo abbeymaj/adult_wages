@@ -8,7 +8,7 @@ from flask import Flask, request, jsonify, render_template
 app = Flask(__name__)
 
 # Creating the home page
-app.route('/')
+@app.route('/')
 def index():
     '''
     This function creates the home page for the web application.
@@ -16,7 +16,7 @@ def index():
     return render_template('index.html')
 
 # Creating a function to predict the datapoint
-app.route('/predict.html', methods=['GET', 'POST'])
+@app.route('/predict.html', methods=['GET', 'POST'])
 def predict_datapoint():
     '''
     This function will display the prediction landing page if the method is "GET".
