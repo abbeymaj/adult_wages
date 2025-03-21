@@ -25,7 +25,7 @@ def predict_datapoint():
     # Display the prediction landing page if the request method is "GET"
     if request.method == 'GET':
         return render_template('predict.html')
-    else:
+    elif request.method == 'POST':
         # If the request method not "GET", run the prediction
         data = CustomData(
             age = int(request.form.get('age')),

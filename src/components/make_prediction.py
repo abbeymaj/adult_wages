@@ -104,7 +104,7 @@ class MakePredictions():
         '''
         try:
             # Instantiating the preprocessor object
-            preprocessor = load_object(self.preprocessor_obj.preprocessor_obj_path)
+            preprocessor = load_object(file_path=self.preprocessor_obj.preprocessor_obj_path)
             
             # Retrieving the model from the model registry
             model = self.retrieve_model()

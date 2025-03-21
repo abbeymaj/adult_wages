@@ -63,16 +63,16 @@ class CustomData():
                 'age': [self.age],
                 'workclass': [self.workclass],
                 'education': [self.education],
-                'education_num': [self.education_num],
-                'marital_status': [self.marital_status],
+                'education-num': [self.education_num],
+                'marital-status': [self.marital_status],
                 'occupation': [self.occupation],
                 'relationship': [self.relationship],
                 'race': [self.race],
                 'sex': [self.sex],
-                'capital_gain': [self.capital_gain],
-                'capital_loss': [self.capital_loss],
-                'hours_per_week': [self.hours_per_week],
-                'native_country': [self.native_country]
+                'capital-gain': [self.capital_gain],
+                'capital-loss': [self.capital_loss],
+                'hours-per-week': [self.hours_per_week],
+                'native-country': [self.native_country]
             }
             
             # Creating a dataframe from the dictionary
