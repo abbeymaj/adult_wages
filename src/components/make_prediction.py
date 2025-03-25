@@ -3,6 +3,7 @@ import sys
 import pandas as pd
 import mlflow
 import dagshub
+import xgboost as xgb
 from src.utils import load_object
 from src.utils import load_run_params
 from src.utils import read_json_file
@@ -23,6 +24,22 @@ class MakePredictions():
         '''
         self.preprocessor_obj = DataTransformationConfig()
         self.model_uri = 'https://dagshub.com/abbeymaj/my-first-repo.mlflow'
+        self.columns = ['num_pipeline__age', 
+                        'num_pipeline__education-num', 
+                        'num_pipeline__hours-per-week', 
+                        'ohe_sex_pipeline__sex_Female', 
+                        'ohe_sex_pipeline__sex_Male', 
+                        'ohe_cap_pipeline__capital-gain-trns_cap_gain', 
+                        'ohe_cap_pipeline__capital-gain-trns_no_cap_gain', 
+                        'ohe_cap_pipeline__capital-loss-trns_cap_loss', 
+                        'ohe_cap_pipeline__capital-loss-trns_no_cap_loss', 
+                        'woe_pipeline__workclass', 'woe_pipeline__education', 
+                        'woe_pipeline__marital-status', 
+                        'woe_pipeline__occupation', 
+                        'woe_pipeline__relationship', 
+                        'woe_pipeline__race', 
+                        'woe_pipeline__native-country'
+                        ]
     
     # Retrieve the latest parameters for the the trained model
     def retrieve_model_params(self):
@@ -112,8 +129,11 @@ class MakePredictions():
             # Transforming the features using the preprocessor object
             xform_features = preprocessor.transform(features)
             
+            # Creating a pandas dataframe for the transformed features
+            xform_data_df = pd.DataFrame(xform_features, columns=self.columns)
+            
             # Making predictions using the transformed features
-            preds = model.predict(xform_features)
+            preds = model.predict(xform_data_df)
             
             return preds
         
