@@ -1,7 +1,18 @@
 # Importing packages
+import pandas as pd
+from sklearn import set_config
+set_config(transform_output='pandas')
 from src.components.create_custom_data import CustomData
 from src.components.make_prediction import MakePredictions
+from src.components.config_entity import DataTransformationConfig
+from src.components.config_entity import ModelTrainerConfig
 from src.utils import convert_preds_to_string
+from src.utils import load_object
+from src.utils import load_run_params
+from src.utils import read_json_file
+import mlflow
+import dagshub
+import xgboost as xgb
 from flask import Flask, request, jsonify, render_template
 
 # Instantiating the Flask app
@@ -45,10 +56,12 @@ def predict_datapoint():
         
         # Creating a dataframe from the user entered data
         df = data.create_dataframe()
-        
-        # Instantiating the prediction pipeline and making predictions
+
+      # Instantiating the prediction pipeline and making predictions
         prediction = MakePredictions()
         num_preds = prediction.predict(df)
+        
+        # Converting the predictions to a readable string
         preds = convert_preds_to_string(num_preds)
         
         return render_template('predict.html', results=preds, pred_df=df)
