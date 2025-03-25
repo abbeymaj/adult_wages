@@ -32,7 +32,7 @@ This is the landing page for the project. The page provides a brief overview of 
 
 The screenshot of the Landing Page is given below:
 
-![Landing Page Screenshot Link](https://github.com/abbeymaj80/my-ml-datasets/blob/master/screenshots/LandingPage_AdultWages.png)
+![Landing Page Screenshot Link](https://github.com/abbeymaj80/my-ml-datasets/blob/master/screenshots/LandingFirstPage_AdultWages.png)
 
 Prediction Page:
 
